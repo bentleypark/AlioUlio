@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.alio.ulio.ui.MainScreen
 import com.alio.ulio.ui.theme.AlioUlioTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,8 +19,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             AlioUlioTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                Surface(color = MaterialTheme.colors.background) {
+                    MainScreen()
                 }
             }
         }
@@ -35,6 +36,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     AlioUlioTheme {
-        Greeting("Android")
+        MainScreen()
     }
 }
