@@ -26,7 +26,8 @@ object Libs {
     object Accompanist {
         const val version = "0.21.0-beta"
         const val insets = "com.google.accompanist:accompanist-insets:$version"
-        const val systemuicontroller = "com.google.accompanist:accompanist-systemuicontroller:$version"
+        const val systemuicontroller =
+            "com.google.accompanist:accompanist-systemuicontroller:$version"
         const val flowlayouts = "com.google.accompanist:accompanist-flowlayout:$version"
     }
 
@@ -85,10 +86,12 @@ object Libs {
             const val core = "androidx.test:core:$version"
             const val runner = "androidx.test:runner:$version"
             const val rules = "androidx.test:rules:$version"
+
             object Ext {
                 private const val version = "1.1.2"
                 const val junit = "androidx.test.ext:junit-ktx:$version"
             }
+
             const val espressoCore = "androidx.test.espresso:espresso-core:3.2.0"
         }
     }
@@ -100,5 +103,9 @@ object Libs {
 
     object Coil {
         const val coilCompose = "io.coil-kt:coil-compose:1.3.2"
+    }
+
+    object SystemUiController {
+        const val accompanist = "com.google.accompanist:accompanist-systemuicontroller:0.21.2-beta"
     }
 }

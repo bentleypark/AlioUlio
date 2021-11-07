@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.alio.ulio.R
+import com.alio.ulio.ui.account.Account
 import com.alio.ulio.ui.component.bottomBarHeight
 import com.alio.ulio.ui.component.icon
 
@@ -39,7 +40,7 @@ fun MainScreen() {
             when (section) {
                 BottomNavigationItem.Home -> Content(title = "Profile")
                 BottomNavigationItem.Alarm -> Content(title = "Profile")
-                BottomNavigationItem.Account -> Content(title = "Add Post options")
+                BottomNavigationItem.Account -> Account()
             }
         }
     }
