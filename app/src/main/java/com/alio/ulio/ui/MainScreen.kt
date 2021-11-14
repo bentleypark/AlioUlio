@@ -11,9 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.alio.ulio.R
 import com.alio.ulio.ui.account.Account
+import com.alio.ulio.ui.alarm.AlarmNavigation
+import com.alio.ulio.ui.alarm.AlarmTypeSelectionUi
 import com.alio.ulio.ui.component.bottomBarHeight
 import com.alio.ulio.ui.component.icon
 
@@ -39,7 +40,7 @@ fun MainScreen() {
         { section ->
             when (section) {
                 BottomNavigationItem.Home -> Content(title = "Profile")
-                BottomNavigationItem.Alarm -> Content(title = "Profile")
+                BottomNavigationItem.Alarm -> AlarmNavigation()
                 BottomNavigationItem.Account -> Account()
             }
         }
@@ -69,7 +70,7 @@ private fun BottomBar(
 //                            ImageBitmap.imageResource(id = iconRes),
                         painter = painterResource(id = iconRes),
                         modifier = Modifier.icon(),
-                        contentDescription =  section.title
+                        contentDescription = section.title
                     )
                 },
                 selected = selected,

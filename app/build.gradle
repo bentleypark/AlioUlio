@@ -65,6 +65,8 @@ dependencies {
     implementation Libs.AndroidX.Compose.iconsExtended
     implementation Libs.AndroidX.Compose.tooling
 
+    implementation Libs.AndroidX.Navigation.navigationCompose
+
     implementation Libs.SystemUiController.accompanist
 
     testImplementation 'junit:junit:4.13.2'
