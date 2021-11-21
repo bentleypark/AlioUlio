@@ -133,5 +133,6 @@ object Libs {
 
     object CustomView {
         const val calendarView = "com.github.kizitonwose:CalendarView:1.0.4"
+        const val expandableLayout ="net.cachapa.expandablelayout:expandablelayout:2.9.2"
     }
 }

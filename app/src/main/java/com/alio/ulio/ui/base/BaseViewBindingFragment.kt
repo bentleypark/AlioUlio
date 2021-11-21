@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.alio.ulio.databinding.BaseFragmentToolbarBinding
 
-abstract class ToolbarFragment<V : ViewDataBinding>(
+abstract class BaseViewBindingFragment<V : ViewDataBinding>(
     private val layoutRes: Int
 ) : Fragment() {
 
@@ -48,5 +48,11 @@ abstract class ToolbarFragment<V : ViewDataBinding>(
                     requireActivity().finish()
                 }
             })
+    }
+
+    fun setTitle(title: String) {
+        if(title.isNotEmpty()) {
+            rootViewBinding.tvTitle.text = title
+        }
     }
 }

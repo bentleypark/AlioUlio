@@ -53,6 +53,7 @@ android {
 
 dependencies {
 
+    implementation Libs.Coroutines.android
     implementation Libs.AndroidX.coreKtx
     implementation Libs.AndroidX.Activity.activityCompose
     implementation Libs.AndroidX.Lifecycle.viewModelCompose
@@ -97,7 +98,8 @@ dependencies {
 //    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 
-     implementation Libs.CustomView.calendarView
+    implementation Libs.CustomView.calendarView
+    implementation Libs.CustomView.expandableLayout
 
     coreLibraryDesugaring Libs.DesugarJdk.desuagrJdk
 
