@@ -6,7 +6,7 @@ data class AlarmSelectionType(
     val image: Int
 )
 
-sealed class AlarmType {
-    object Onetime : AlarmType()
-    object Regular : AlarmType()
+sealed class AlarmType(val typeName: String) {
+    object Onetime : AlarmType("onetime")
+    object Regular : AlarmType("regular")
 }

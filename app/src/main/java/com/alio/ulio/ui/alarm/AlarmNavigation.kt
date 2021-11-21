@@ -1,6 +1,9 @@
 package com.alio.ulio.ui.alarm
 
+import android.content.Intent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCompositionContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,16 +19,6 @@ fun AlarmNavigation() {
     ) {
         composable(route = AlarmScreen.AlarmTypeSelectionScreen.router) {
             AlarmTypeSelectionUi(navController)
-        }
-        composable(
-            route = AlarmScreen.AlarmTimeSelectionScreen.router,
-            arguments = listOf(navArgument("alarmType") {
-                type = NavType.StringType
-                defaultValue = "onetime"
-                nullable = false
-            })
-        ) {
-            AlarmTimeSelectionUi(navController)
         }
     }
 }

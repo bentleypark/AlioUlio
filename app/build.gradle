@@ -3,6 +3,8 @@ import com.alio.ulio.buildsrc.Libs
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -10,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.alio.ulio"
-        minSdk 21
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -36,6 +38,8 @@ android {
     }
     buildFeatures {
         compose true
+        viewBinding true
+        dataBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
@@ -65,13 +69,36 @@ dependencies {
     implementation Libs.AndroidX.Compose.iconsExtended
     implementation Libs.AndroidX.Compose.tooling
 
+    implementation Libs.AndroidX.Activity.activityCompose
+    implementation Libs.AndroidX.Activity.activityCompat
+    implementation Libs.AndroidX.Lifecycle.lifeCycleKtx
+//    implementation Libs.AndroidX.Lifecycle.saveState
+
     implementation Libs.AndroidX.Navigation.navigationCompose
+    implementation Libs.AndroidX.Navigation.navigationFragmentKtx
+    implementation Libs.AndroidX.Navigation.navigationUiKtx
 
     implementation Libs.SystemUiController.accompanist
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+
+
+    implementation Libs.AndroidX.Material.material
+
+    implementation Libs.Hilt.hiltAndroid
+    kapt Libs.Hilt.hiltAndroidCompiler
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
 //    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
 //    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+     implementation Libs.CustomView.calendarView
+
+    coreLibraryDesugaring Libs.DesugarJdk.desuagrJdk
+
 }

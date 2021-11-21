@@ -16,12 +16,14 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.alio.ulio.R
+import com.alio.ulio.ui.alarm.MakeAlarmActivity.Companion.newIntent
 import com.alio.ulio.ui.theme.AlarmTypSelectionColor
 import com.alio.ulio.ui.theme.ToolbarTitleColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -35,7 +37,7 @@ fun AlarmTypeSelectionUi(navController: NavController) {
 
     Scaffold(
         topBar = { AlarmUiToolbar(false, "어떤 알람을 \n보내실건가요?", 1) }) {
-        AlarmTypeSelectList(navController)
+        AlarmTypeSelectList()
     }
 }
 
@@ -70,7 +72,7 @@ fun AlarmUiToolbar(backButtonYn: Boolean, title: String, stage: Int) {
 }
 
 @Composable
-fun AlarmTypeSelectList(navController: NavController) {
+fun AlarmTypeSelectList() {
 
     val alarmTypeList = listOf(
         AlarmSelectionType(
@@ -81,9 +83,10 @@ fun AlarmTypeSelectList(navController: NavController) {
         AlarmSelectionType(
             AlarmType.Onetime,
             R.drawable.ic_alarm_type_regular_title,
-            R.drawable.ic_alarm_type_one_time
+            R.drawable.ic_alarm_type_regular
         )
     )
+    val context = LocalContext.current
 
     LazyColumn {
         itemsIndexed(alarmTypeList) { index, alarm ->
@@ -100,10 +103,20 @@ fun AlarmTypeSelectList(navController: NavController) {
                     .clickable {
                         when (alarm.type) {
                             AlarmType.Onetime -> {
-                                navController.navigate(AlarmScreen.AlarmTimeSelectionScreen.router)
+                                context.startActivity(
+                                    newIntent(
+                                        context,
+                                        AlarmType.Onetime.typeName
+                                    )
+                                )
                             }
                             else -> {
-                                navController.navigate(AlarmScreen.AlarmTimeSelectionScreen.router)
+                                context.startActivity(
+                                    newIntent(
+                                        context,
+                                        AlarmType.Regular.typeName
+                                    )
+                                )
                             }
                         }
                     }

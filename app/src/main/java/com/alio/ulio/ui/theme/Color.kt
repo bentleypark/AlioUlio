@@ -11,3 +11,6 @@ val AccountToolbarColor = Color(0xFFF5F5F5)
 val ToolbarTitleColor = Color(0xFF222222)
 
 val AlarmTypSelectionColor = Color(0xFFF7F8FA)
+
+val CalendarBackgroundColor = Color(0xFFF7F7F7)
+val CalendarSelectedColor = Color(0xFF3D414D)

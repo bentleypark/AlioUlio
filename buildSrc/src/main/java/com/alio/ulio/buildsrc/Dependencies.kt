@@ -32,7 +32,7 @@ object Libs {
     }
 
     object Kotlin {
-        private const val version = "1.5.31"
+        private const val version = "1.6.0"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
         const val gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$version"
         const val extensions = "org.jetbrains.kotlin:kotlin-android-extensions:$version"
@@ -45,8 +45,15 @@ object Libs {
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
+    object Hilt {
+        private const val version = "2.40.1"
+        const val hiltAndroid = "com.google.dagger:hilt-android:$version"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:$version"
+    }
+
     object AndroidX {
-        const val coreKtx = "androidx.core:core-ktx:1.6.0"
+        const val coreKtx = "androidx.core:core-ktx:1.7.0"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout:2.1.2"
 
         object Compose {
             const val snapshot = ""
@@ -66,14 +73,25 @@ object Libs {
 
         object Activity {
             const val activityCompose = "androidx.activity:activity-compose:1.3.1"
+            const val activityCompat = "androidx.appcompat:appcompat:1.4.0"
         }
 
         object Lifecycle {
-            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0"
+            private const val version ="2.4.0"
+            const val viewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$version"
+            const val lifeCycleKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$version"
+            const val saveState = "androidx.lifecycle:lifecycle-viewmodel-savedstate:$version"
+        }
+
+        object Material {
+            const val material = "com.google.android.material:material:1.4.0"
         }
 
         object Navigation {
-            const val navigationCompose = "androidx.navigation:navigation-compose:2.4.0-beta02"
+            private const val version = "2.4.0-beta02"
+            const val navigationCompose = "androidx.navigation:navigation-compose:$version"
+            const val navigationFragmentKtx = "androidx.navigation:navigation-fragment-ktx:$version"
+            const val navigationUiKtx = "androidx.navigation:navigation-ui-ktx:$version"
         }
 
         object ConstraintLayout {
@@ -101,11 +119,19 @@ object Libs {
         const val junit = "junit:junit:$version"
     }
 
+    object DesugarJdk {
+        const val desuagrJdk = "com.android.tools:desugar_jdk_libs:1.1.5"
+    }
+
     object Coil {
         const val coilCompose = "io.coil-kt:coil-compose:1.3.2"
     }
 
     object SystemUiController {
         const val accompanist = "com.google.accompanist:accompanist-systemuicontroller:0.21.2-beta"
+    }
+
+    object CustomView {
+        const val calendarView = "com.github.kizitonwose:CalendarView:1.0.4"
     }
 }
