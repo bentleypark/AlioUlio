@@ -49,10 +49,4 @@ abstract class BaseViewBindingFragment<V : ViewDataBinding>(
                 }
             })
     }
-
-    fun setTitle(title: String) {
-        if(title.isNotEmpty()) {
-            rootViewBinding.tvTitle.text = title
-        }
-    }
 }

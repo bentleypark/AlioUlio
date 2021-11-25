@@ -36,7 +36,7 @@ fun AlarmTypeSelectionUi(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { AlarmUiToolbar(false, "어떤 알람을 \n보내실건가요?") }) {
+        topBar = { AlarmUiToolbar(false, "어떤 알람을\n보내실건가요?") }) {
         AlarmTypeSelectList()
     }
 }

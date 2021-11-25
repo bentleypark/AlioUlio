@@ -2,6 +2,8 @@ package com.alio.ulio.ui.alarm
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -24,6 +26,7 @@ import java.time.YearMonth
 class AlarmDateTimeSelectionFragment :
     BaseViewBindingFragment<FragmentAlarmDaySelectionBinding>(R.layout.fragment_alarm_day_selection) {
 
+    private val activityViewModel: MakeAlarmViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,8 +35,7 @@ class AlarmDateTimeSelectionFragment :
     }
 
     private fun setUi() {
-        setTitle("알람의 조건을\n설정하세요")
-
+        activityViewModel.setTitle("알람의 조건을\n 설정하세요")
         setUiOfCalendarView()
         setBtnListener()
     }

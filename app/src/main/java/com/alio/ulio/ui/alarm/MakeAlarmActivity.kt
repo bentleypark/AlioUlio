@@ -5,21 +5,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import com.alio.ulio.R
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.alio.ulio.databinding.ActivityMakeAlarmBinding
-import com.alio.ulio.databinding.CalendarDayLayoutBinding
-import com.alio.ulio.databinding.ViewCalendarDayBinding
-import com.alio.ulio.databinding.ViewCalendarHeaderBinding
-import com.alio.ulio.ext.daysOfWeekFromLocale
-import com.kizitonwose.calendarview.CalendarView
-import com.kizitonwose.calendarview.model.CalendarDay
-import com.kizitonwose.calendarview.model.CalendarMonth
-import com.kizitonwose.calendarview.ui.DayBinder
-import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
-import com.kizitonwose.calendarview.ui.ViewContainer
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.YearMonth
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MakeAlarmActivity : AppCompatActivity() {
@@ -28,9 +21,31 @@ class MakeAlarmActivity : AppCompatActivity() {
         ActivityMakeAlarmBinding.inflate(LayoutInflater.from(this))
     }
 
+    private val viewModel: MakeAlarmViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
+
+        observeViewModel()
+    }
+
+    private fun setTitle(title: String) {
+        if (title.isNotEmpty()) {
+            viewBinding.tvTitle.text = title
+        }
+    }
+
+    private fun observeViewModel() = with(viewModel) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                tilte.collect {
+                    if (it.isNotEmpty()) {
+                        this@MakeAlarmActivity.setTitle(it)
+                    }
+                }
+            }
+        }
     }
 
     companion object {
