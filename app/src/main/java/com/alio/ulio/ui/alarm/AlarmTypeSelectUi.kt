@@ -36,13 +36,13 @@ fun AlarmTypeSelectionUi(navController: NavController) {
     }
 
     Scaffold(
-        topBar = { AlarmUiToolbar(false, "어떤 알람을 \n보내실건가요?", 1) }) {
+        topBar = { AlarmUiToolbar(false, "어떤 알람을 \n보내실건가요?") }) {
         AlarmTypeSelectList()
     }
 }
 
 @Composable
-fun AlarmUiToolbar(backButtonYn: Boolean, title: String, stage: Int) {
+fun AlarmUiToolbar(backButtonYn: Boolean, title: String) {
     Column {
         AnimatedVisibility(visible = backButtonYn) {
             Icon(
@@ -60,14 +60,14 @@ fun AlarmUiToolbar(backButtonYn: Boolean, title: String, stage: Int) {
             ),
             modifier = Modifier.padding(start = 20.dp, top = 20.dp)
         )
-        Image(
-            painter = painterResource(getStageImage(stage)),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(start = 20.dp, top = 40.dp)
-        )
+//        Image(
+//            painter = painterResource(getStageImage(stage)),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .wrapContentHeight()
+//                .padding(start = 20.dp, top = 40.dp)
+//        )
     }
 }
 
