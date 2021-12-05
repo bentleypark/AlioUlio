@@ -100,6 +100,7 @@ dependencies {
 
     implementation Libs.CustomView.calendarView
     implementation Libs.CustomView.expandableLayout
+    implementation Libs.CustomView.lottie
 
     coreLibraryDesugaring Libs.DesugarJdk.desuagrJdk
 

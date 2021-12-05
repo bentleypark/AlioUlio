@@ -35,9 +35,10 @@ class AlarmDateTimeSelectionFragment :
     }
 
     private fun setUi() {
-        activityViewModel.setTitle("알람의 조건을\n 설정하세요")
+        activityViewModel.setTitle("알람의 조건을\n설정하세요")
         setUiOfCalendarView()
         setBtnListener()
+        setProgressAnim()
     }
 
     private fun setBtnListener() = with(viewBinding) {
@@ -48,6 +49,10 @@ class AlarmDateTimeSelectionFragment :
                 expandLayout.expand(true)
             }
         }
+    }
+
+    private fun setProgressAnim() {
+        activityViewModel.setProgressAnim("indicator.json")
     }
 
     private fun setUiOfCalendarView() = viewLifecycleOwner.lifecycleScope.launch {
@@ -93,5 +98,5 @@ class DayViewContainer(
 }
 
 class MonthViewContainer(view: View) : ViewContainer(view) {
-    val textView = ViewCalendarHeaderBinding.bind(view).tvMonth
+//    val textView = ViewCalendarHeaderBinding.bind(view).tvMonth
 }

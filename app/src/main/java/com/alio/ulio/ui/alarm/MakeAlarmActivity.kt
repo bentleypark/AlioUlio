@@ -28,24 +28,40 @@ class MakeAlarmActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         observeViewModel()
+        viewBinding.progressAnim.setAnimation("progressbar_002.json")
     }
 
     private fun setTitle(title: String) {
         if (title.isNotEmpty()) {
             viewBinding.tvTitle.text = title
         }
+
     }
 
     private fun observeViewModel() = with(viewModel) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                tilte.collect {
+                title.collect {
                     if (it.isNotEmpty()) {
                         this@MakeAlarmActivity.setTitle(it)
                     }
                 }
+
+                progressAnim.collect {
+//                    if (it.isNotEmpty()) {
+//                        viewBinding.progressAnim.setAnimation(it)
+//                        viewBinding.progressAnim.playAnimation()
+//                    }
+                }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+
+
     }
 
     companion object {

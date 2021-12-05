@@ -13,4 +13,6 @@
     <color name="example_5_toolbar_color">#282828</color>
     <color name="example_5_text_grey">#bdbdbd</color>
     <color name="example_5_text_grey_light">#A1A7B8</color>
+
+    <color name="calendar_header_color">#999999</color>
 </resources>

@@ -130,8 +130,9 @@ fun AlarmTypeSelectList() {
                     painter = painterResource(alarm.image),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(start = 12.dp, bottom = 20.dp, end = 20.dp)
+                        .padding(start = 30.dp, bottom = 20.dp, end = 20.dp)
                         .align(Alignment.Bottom)
+
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
