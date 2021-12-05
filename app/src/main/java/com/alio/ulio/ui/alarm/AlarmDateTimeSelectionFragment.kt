@@ -52,7 +52,7 @@ class AlarmDateTimeSelectionFragment :
         setUiOfCalendarView()
         setUIAndEventOfCalendarViewHeader()
         setBtnListener()
-        setProgressAnim()
+//        setProgressAnim()
     }
 
     private fun setBtnListener() = with(viewBinding) {
@@ -66,7 +66,7 @@ class AlarmDateTimeSelectionFragment :
     }
 
     private fun setProgressAnim() {
-        activityViewModel.setProgressAnim("indicator.json")
+        activityViewModel.setProgressAnim("send_complete.json")
     }
 
     private fun observeViewModel() {

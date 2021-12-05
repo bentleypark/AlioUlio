@@ -28,7 +28,7 @@ class MakeAlarmActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         observeViewModel()
-        viewBinding.progressAnim.setAnimation("progressfinal.json")
+//        viewBinding.progressAnim.setAnimation("send_complete.json")
     }
 
     private fun setTitle(title: String) {
