@@ -2,6 +2,8 @@ package com.alio.ulio.ui.alarm
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,18 +17,28 @@ import com.alio.ulio.ext.daysOfWeekFromLocale
 import com.alio.ulio.ui.base.BaseViewBindingFragment
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
+import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthHeaderFooterBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import com.kizitonwose.calendarview.utils.next
+import com.kizitonwose.calendarview.utils.previous
+import com.kizitonwose.calendarview.utils.yearMonth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.YearMonth
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class AlarmDateTimeSelectionFragment :
     BaseViewBindingFragment<FragmentAlarmDaySelectionBinding>(R.layout.fragment_alarm_day_selection) {
 
     private val activityViewModel: MakeAlarmViewModel by activityViewModels()
+
+    private val monthFormatter = DateTimeFormatter.ofPattern("MMMM")
+
+    private val dateFormatter = DateTimeFormatter.ofPattern("DD")
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,7 +48,9 @@ class AlarmDateTimeSelectionFragment :
 
     private fun setUi() {
         activityViewModel.setTitle("알람의 조건을\n설정하세요")
+        observeViewModel()
         setUiOfCalendarView()
+        setUIAndEventOfCalendarViewHeader()
         setBtnListener()
         setProgressAnim()
     }
@@ -55,6 +69,40 @@ class AlarmDateTimeSelectionFragment :
         activityViewModel.setProgressAnim("indicator.json")
     }
 
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                activityViewModel.selectedDate.collect { selectedDate ->
+                    selectedDate?.let {
+                        val fullDateText = "${selectedDate.yearMonth.year}월 ${monthFormatter.format(selectedDate.yearMonth)} ${selectedDate.dayOfMonth}일"
+                        viewBinding.tvHint.text = fullDateText
+                        viewBinding.tvHint.setTextColor(ContextCompat.getColor(requireContext(),R.color.selected_date_color))
+                        viewBinding.expandLayout.collapse(true)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setUIAndEventOfCalendarViewHeader() = with(viewBinding) {
+        calendarView.monthScrollListener = { month ->
+            val monthText = "${month.yearMonth.year} ${monthFormatter.format(month.yearMonth)}"
+            tvMonth.text = monthText
+        }
+
+        leftArrow.setOnClickListener {
+            calendarView.findFirstVisibleMonth()?.let {
+                calendarView.smoothScrollToMonth(it.yearMonth.previous)
+            }
+        }
+
+        rightArrow.setOnClickListener {
+            calendarView.findFirstVisibleMonth()?.let {
+                calendarView.smoothScrollToMonth(it.yearMonth.next)
+            }
+        }
+    }
+
     private fun setUiOfCalendarView() = viewLifecycleOwner.lifecycleScope.launch {
         viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             val daysOfWeek = daysOfWeekFromLocale()
@@ -69,10 +117,53 @@ class AlarmDateTimeSelectionFragment :
             calendarView.scrollToMonth(currentMonth)
             calendarView.dayBinder = object : DayBinder<DayViewContainer> {
                 override fun bind(container: DayViewContainer, day: CalendarDay) {
-                    container.day = day
-                    val textView = container.binding.dayText
-                    val layout = container.binding.exFiveDayLayout
-                    textView.text = day.date.dayOfMonth.toString()
+                    with(container.binding) {
+                        container.day = day
+
+                        if (day.owner == DayOwner.NEXT_MONTH ||
+                            day.owner == DayOwner.PREVIOUS_MONTH
+                        ) {
+                            root.alpha = 0.0f
+                        } else {
+                            root.alpha = 1.0f
+
+                            root.setOnClickListener {
+                                val selectedDate = activityViewModel.selectedDate.value
+                                if (selectedDate != day.date) {
+                                    activityViewModel.setSelectedDate(day.date)
+                                    calendarView.notifyDateChanged(day.date)
+                                    selectedDate?.let {
+                                        calendarView.notifyDateChanged(it)
+                                    }
+                                }
+                            }
+                        }
+
+                        val textView = dayText
+                        textView.text = day.date.dayOfMonth.toString()
+
+                        if (day.owner == DayOwner.THIS_MONTH) {
+                            if (activityViewModel.selectedDate.value == day.date) {
+                                selectedDateView.isVisible = true
+                                textView.setTextColor(
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.white
+                                    )
+                                )
+                            } else {
+                                selectedDateView.isVisible = false
+                                textView.setTextColor(
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color.calendar_black
+                                    )
+                                )
+                            }
+                        }
+
+                    }
+
                 }
 
                 override fun create(view: View) = DayViewContainer(view)
@@ -88,15 +179,16 @@ class AlarmDateTimeSelectionFragment :
             }
         }
     }
-}
 
-class DayViewContainer(
-    view: View
-) : ViewContainer(view) {
-    lateinit var day: CalendarDay
-    val binding = CalendarDayLayoutBinding.bind(view)
-}
+    class DayViewContainer(
+        view: View
+    ) : ViewContainer(view) {
+        lateinit var day: CalendarDay
+        val binding = CalendarDayLayoutBinding.bind(view)
+    }
 
-class MonthViewContainer(view: View) : ViewContainer(view) {
+    class MonthViewContainer(view: View) : ViewContainer(view) {
 //    val textView = ViewCalendarHeaderBinding.bind(view).tvMonth
+    }
 }
+
