@@ -128,12 +128,14 @@ object Libs {
     }
 
     object SystemUiController {
-        const val accompanist = "com.google.accompanist:accompanist-systemuicontroller:0.21.2-beta"
+        private const val version = "0.21.4-beta"
+        const val systemuicontroller = "com.google.accompanist:accompanist-systemuicontroller:$version"
+        const val permissions = "com.google.accompanist:accompanist-permissions:$version"
     }
 
     object CustomView {
         const val calendarView = "com.github.kizitonwose:CalendarView:1.0.4"
         const val expandableLayout ="net.cachapa.expandablelayout:expandablelayout:2.9.2"
-        const val lottie = "com.airbnb.android:lottie:4.2.2"
+        const val lottie = "com.airbnb.android:lottie:4.1.0"
     }
 }

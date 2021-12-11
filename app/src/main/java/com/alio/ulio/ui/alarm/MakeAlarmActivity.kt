@@ -28,7 +28,7 @@ class MakeAlarmActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         observeViewModel()
-//        viewBinding.progressAnim.setAnimation("send_complete.json")
+//        viewBinding.progressAnim.setAnimation("progressbar.json")
     }
 
     private fun setTitle(title: String) {
@@ -60,7 +60,7 @@ class MakeAlarmActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-
+        viewBinding.progressAnim.playAnimation()
 
     }
 
