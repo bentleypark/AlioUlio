@@ -9,14 +9,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import com.alio.ulio.R
 import com.alio.ulio.ui.account.Account
 import com.alio.ulio.ui.alarm.AlarmNavigation
 import com.alio.ulio.ui.alarm.AlarmTypeSelectionUi
 import com.alio.ulio.ui.component.bottomBarHeight
 import com.alio.ulio.ui.component.icon
+import com.alio.ulio.ui.theme.fonts
 
 @Composable
 fun MainScreen() {
@@ -67,7 +72,6 @@ private fun BottomBar(
             BottomNavigationItem(
                 icon = {
                     Icon(
-//                            ImageBitmap.imageResource(id = iconRes),
                         painter = painterResource(id = iconRes),
                         modifier = Modifier.icon(),
                         contentDescription = section.title
@@ -76,7 +80,12 @@ private fun BottomBar(
                 selected = selected,
                 onClick = { onSectionSelected(section) },
                 alwaysShowLabel = true,
-                label = { Text(text = section.title) }
+                label = {
+                    Text(
+                        text = section.title,
+                        style = MaterialTheme.typography.button
+                    )
+                }
             )
         }
     }

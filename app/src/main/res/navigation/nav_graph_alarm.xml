@@ -6,6 +6,14 @@
 
     <fragment
         android:id="@+id/alarmDateTimeSelectionFragment"
-        android:name="com.alio.ulio.ui.alarm.AlarmDateTimeSelectionFragment"
-        android:label="AlarmDateTimeSelectionFragment" />
+        android:name="com.alio.ulio.ui.alarm.date.AlarmDateTimeSelectionFragment"
+        android:label="AlarmDateTimeSelectionFragment" >
+        <action
+            android:id="@+id/action_alarmDateTimeSelectionFragment_to_recordAlarmFragment"
+            app:destination="@id/recordAlarmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordAlarmFragment"
+        android:name="com.alio.ulio.ui.alarm.record.RecordAlarmFragment"
+        android:label="RecordAlarmFragment" />
 </navigation>

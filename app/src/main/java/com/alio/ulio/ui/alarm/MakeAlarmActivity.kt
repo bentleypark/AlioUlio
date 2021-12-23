@@ -28,7 +28,6 @@ class MakeAlarmActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
 
         observeViewModel()
-//        viewBinding.progressAnim.setAnimation("progressbar.json")
     }
 
     private fun setTitle(title: String) {
@@ -40,19 +39,24 @@ class MakeAlarmActivity : AppCompatActivity() {
 
     private fun observeViewModel() = with(viewModel) {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 title.collect {
                     if (it.isNotEmpty()) {
                         this@MakeAlarmActivity.setTitle(it)
                     }
                 }
+            }
+        }
 
-                progressAnim.collect {
-//                    if (it.isNotEmpty()) {
-//                        viewBinding.progressAnim.setAnimation(it)
-//                        viewBinding.progressAnim.playAnimation()
-//                    }
-                }
+        progressImg.observe(this@MakeAlarmActivity) {
+            viewBinding.ivProgress.setImageResource(it)
+        }
+
+        btnNextUi.observe(this@MakeAlarmActivity) { btnNextUi ->
+            viewBinding.btnNext.apply {
+                isSelected = btnNextUi.isEnable
+//                isEnabled = btnNextUi.isEnable
+                setOnClickListener { btnNextUi.action?.invoke() }
             }
         }
     }
@@ -60,7 +64,6 @@ class MakeAlarmActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        viewBinding.progressAnim.playAnimation()
 
     }
 

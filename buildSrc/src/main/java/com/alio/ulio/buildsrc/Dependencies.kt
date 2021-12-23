@@ -138,4 +138,6 @@ object Libs {
         const val expandableLayout ="net.cachapa.expandablelayout:expandablelayout:2.9.2"
         const val lottie = "com.airbnb.android:lottie:4.1.0"
     }
+
+    const val timber = "com.jakewharton.timber:timber:4.7.1"
 }

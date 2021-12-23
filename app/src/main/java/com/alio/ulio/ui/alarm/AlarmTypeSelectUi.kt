@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.navigation.NavController
 import com.alio.ulio.R
 import com.alio.ulio.ui.alarm.MakeAlarmActivity.Companion.newIntent
 import com.alio.ulio.ui.theme.AlarmTypSelectionColor
+import com.alio.ulio.ui.theme.AlioUlioTheme
 import com.alio.ulio.ui.theme.ToolbarTitleColor
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
@@ -53,11 +55,7 @@ fun AlarmUiToolbar(backButtonYn: Boolean, title: String) {
         }
         Text(
             text = title,
-            style = TextStyle(
-                color = ToolbarTitleColor,
-                fontSize = 24.sp,
-                lineHeight = 30.sp
-            ),
+            style = MaterialTheme.typography.body1,
             modifier = Modifier.padding(start = 20.dp, top = 20.dp)
         )
 //        Image(
