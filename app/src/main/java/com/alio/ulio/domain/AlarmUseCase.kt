@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
 
 @ExperimentalCoroutinesApi
@@ -36,7 +37,7 @@ class AlarmUseCase(private val networkDataSource: NetworkDataSource) {
 class UploadUseCase(private val networkDataSource: NetworkDataSource) {
 
 
-    operator fun invoke(url: String, file: MultipartBody.Part): Flow<UploadAudioFileResponse> =
+    operator fun invoke(url: String, file: RequestBody): Flow<UploadAudioFileResponse> =
         callbackFlow {
             networkDataSource.uploadAudioFile(url, file)
                 .catch { exception -> Timber.e(exception) }

@@ -3,6 +3,7 @@ package com.alio.ulio.data
 import com.alio.ulio.data.model.FindUploadUrlResponse
 import com.alio.ulio.data.model.UploadAudioFileResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -15,12 +16,12 @@ interface ApiService {
     @POST("voices")
     suspend fun findUploadUrl(@Field("name") email: String): FindUploadUrlResponse
 
-    @Multipart
-    @POST
+    //    @Multipart
+    @Headers("Content-Type: audio/mpeg")
+    @PUT
     suspend fun uploadAudioFile(
-        @Header("Content-Type") contentType: String = "audio/mpeg",
         @Url url: String,
-        @Part file: MultipartBody.Part,
+        @Body file: RequestBody,
     ): UploadAudioFileResponse
 
 }

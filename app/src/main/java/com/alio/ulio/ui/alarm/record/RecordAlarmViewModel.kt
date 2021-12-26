@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class RecordAlarmViewModel @Inject constructor(
         }
     }
 
-    fun upload(file: MultipartBody.Part) {
+    fun upload(file: RequestBody) {
         viewModelScope.launch {
             uploadUseCase.invoke(uploadUrl.value ?: "", file).collect { result ->
                 Timber.d("result: $result")

@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okio.BufferedSink
@@ -49,7 +50,7 @@ class RecordAlarmFragment :
     private var amplitudeTimer = Timer()
 
     private var duration = 0
-    private var fileName: String = "alioulio_alarm.m4a"
+    private var fileName: String = "alioulio_alarm.mp3"
     private val dirPath by lazy {
         requireContext().getExternalFilesDir(Environment.DIRECTORY_ALARMS)?.absolutePath + "/AlioUlio/"
     }
@@ -279,14 +280,14 @@ class RecordAlarmFragment :
     }
 
 
-    fun makeMultipartFromUri(): MultipartBody.Part {
+    fun makeMultipartFromUri(): RequestBody {
 
         val uri = getAudioFileContentUri(getMediaStoreRecordings().last().id.toLong())
         val title = getMediaStoreRecordings().last().title
 
         val requestBody = object : RequestBody() {
             override fun contentType(): MediaType? {
-                return requireActivity().contentResolver.getType(uri)?.toMediaType()
+                return requireActivity().contentResolver.getType(uri)?.toMediaTypeOrNull()
             }
 
             override fun writeTo(sink: BufferedSink) {
@@ -297,7 +298,8 @@ class RecordAlarmFragment :
         }
 
 
-        return MultipartBody.Part.createFormData(fileName, title, requestBody)
+        return requestBody
+//        return MultipartBody.Part.createFormData(fileName, title, requestBody)
     }
 
     private fun observeViewModel() = with(viewModel) {
