@@ -9,15 +9,14 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alio.ulio.R
 import com.alio.ulio.databinding.FragmentRecordAlarmBinding
-import com.alio.ulio.ext.getIntValue
-import com.alio.ulio.ext.getMimeType
-import com.alio.ulio.ext.getStringValue
-import com.alio.ulio.ext.queryCursor
+import com.alio.ulio.ext.*
 import com.alio.ulio.ui.alarm.MakeAlarmViewModel
 import com.alio.ulio.ui.base.BaseViewBindingFragment
 import com.alio.ulio.ui.model.Recording
@@ -75,7 +74,7 @@ class RecordAlarmFragment :
     private fun setUi() {
         activityViewModel.setTitle("뭐라고 보내면\n좋을까요?")
         activityViewModel.setProgressImg(R.drawable.ic_progress_line02)
-        activityViewModel.setBtnNextEnable(true)
+        activityViewModel.setBtnNextEnable(false)
         setUiAndEventOfAudioVisualizer()
     }
 
@@ -116,7 +115,6 @@ class RecordAlarmFragment :
 //
 
         activityViewModel.setBtnNextAction {
-//            togglePlayBack()
             viewModel.findUploadUrl(fileName)
         }
 
@@ -129,8 +127,31 @@ class RecordAlarmFragment :
                 else -> {
                     it.isSelected = false
                     stopRecording()
+
+                    viewBinding.ivRecordIndicator.isVisible = false
+                    viewBinding.tvDuration.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.normal_duration_color
+                        )
+                    )
+
+                    viewBinding.tvPlay.isEnabled = true
+                    viewBinding.tvPlay.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.normal_duration_color
+                        )
+                    )
+
+                    activityViewModel.setBtnNextEnable(true)
                 }
             }
+        }
+
+
+        viewBinding.tvPlay.setOnClickListener {
+            togglePlayBack()
         }
     }
 
@@ -156,6 +177,7 @@ class RecordAlarmFragment :
             setOutputFile(fileName)
             setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             setAudioSamplingRate(44100)
+            setAudioEncodingBitRate(128000)
             setOutputFile(dirPath)
 
             try {
@@ -167,6 +189,10 @@ class RecordAlarmFragment :
             start()
             duration = 0
             status = RECORDING_RUNNING
+
+            durationTimer = Timer()
+            durationTimer.scheduleAtFixedRate(getDurationUpdateTask(), 1000, 1000)
+            viewBinding.ivRecordIndicator.isVisible = true
         }
     }
 
@@ -303,11 +329,31 @@ class RecordAlarmFragment :
     }
 
     private fun observeViewModel() = with(viewModel) {
-        uploadUrl.observe(viewLifecycleOwner){ url ->
+        uploadUrl.observe(viewLifecycleOwner) { url ->
             upload(makeMultipartFromUri())
         }
     }
 
+    private fun getDurationUpdateTask() = object : TimerTask() {
+        override fun run() {
+            if (status == RECORDING_RUNNING) {
+                duration++
+                updateDuration()
+            }
+        }
+    }
+
+    private fun updateDuration() {
+        viewBinding.tvDuration.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.record_duration_color
+            )
+        )
+        lifecycleScope.launch(Dispatchers.Main) {
+            viewBinding.tvDuration.text = duration.getFormattedDuration(true)
+        }
+    }
 
     override fun onStop() {
         super.onStop()

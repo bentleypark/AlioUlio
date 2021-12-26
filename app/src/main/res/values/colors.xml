@@ -19,4 +19,6 @@
     <color name="selected_date_color">#3D3D3D</color>
     <color name="input_text_color">#A3A3A3</color>
     <color name="input_hint_text_color">#D6D6D6</color>
+    <color name="record_duration_color">#F85D79</color>
+    <color name="normal_duration_color">#666666</color>
 </resources>

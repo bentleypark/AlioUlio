@@ -30,8 +30,20 @@
             android:textColor="#DBDBDB"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/visualizerView" />
+
+        <ImageView
+            android:id="@+id/ivRecordIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_record_indicator"
+            app:layout_constraintBottom_toTopOf="@+id/tvDuration"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@+id/tvDuration" />
 
         <ImageView
             android:id="@+id/btnRecord"
@@ -42,6 +54,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvDuration" />
+
+        <TextView
+            android:id="@+id/tvPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="다시 듣기"
+            android:textColor="#DBDBDB"
+            android:textSize="16dp"
+            android:enabled="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRecord" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
