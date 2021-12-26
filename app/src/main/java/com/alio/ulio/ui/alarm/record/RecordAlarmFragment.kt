@@ -7,7 +7,6 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.os.Environment.DIRECTORY_ALARMS
 import android.provider.MediaStore
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -17,6 +16,7 @@ import com.alio.ulio.R
 import com.alio.ulio.databinding.FragmentRecordAlarmBinding
 import com.alio.ulio.ext.getIntValue
 import com.alio.ulio.ext.getMimeType
+import com.alio.ulio.ext.getStringValue
 import com.alio.ulio.ext.queryCursor
 import com.alio.ulio.ui.alarm.MakeAlarmViewModel
 import com.alio.ulio.ui.base.BaseViewBindingFragment
@@ -24,6 +24,12 @@ import com.alio.ulio.ui.model.Recording
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okio.BufferedSink
+import okio.source
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
@@ -61,6 +67,7 @@ class RecordAlarmFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeViewModel()
         setUi()
     }
 
@@ -251,9 +258,9 @@ class RecordAlarmFragment :
             true
         ) { cursor ->
             val id = cursor.getIntValue(MediaStore.Audio.Media._ID)
+            val title = cursor.getStringValue(MediaStore.Audio.Media.DISPLAY_NAME)
 
-
-            val recording = Recording(id)
+            val recording = Recording(id, title)
             recordings.add(recording)
         }
 
@@ -270,6 +277,35 @@ class RecordAlarmFragment :
 
         return ContentUris.withAppendedId(baseUri, id)
     }
+
+
+    fun makeMultipartFromUri(): MultipartBody.Part {
+
+        val uri = getAudioFileContentUri(getMediaStoreRecordings().last().id.toLong())
+        val title = getMediaStoreRecordings().last().title
+
+        val requestBody = object : RequestBody() {
+            override fun contentType(): MediaType? {
+                return requireActivity().contentResolver.getType(uri)?.toMediaType()
+            }
+
+            override fun writeTo(sink: BufferedSink) {
+                requireActivity().contentResolver.openInputStream(uri)
+                    ?.let { sink.writeAll(it.source()) }
+            }
+
+        }
+
+
+        return MultipartBody.Part.createFormData(fileName, title, requestBody)
+    }
+
+    private fun observeViewModel() = with(viewModel) {
+        uploadUrl.observe(viewLifecycleOwner){ url ->
+            upload(makeMultipartFromUri())
+        }
+    }
+
 
     override fun onStop() {
         super.onStop()

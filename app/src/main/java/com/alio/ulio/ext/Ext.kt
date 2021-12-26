@@ -659,3 +659,5 @@ fun Context.queryCursor(
 }
 
 fun Cursor.getIntValue(key: String) = getInt(getColumnIndex(key))
+
+fun Cursor.getStringValue(key: String) = getString(getColumnIndex(key))
