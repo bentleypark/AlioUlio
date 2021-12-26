@@ -1,8 +1,10 @@
 package com.alio.ulio.ui.alarm.record
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.Environment.DIRECTORY_ALARMS
@@ -13,9 +15,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.alio.ulio.R
 import com.alio.ulio.databinding.FragmentRecordAlarmBinding
+import com.alio.ulio.ext.getIntValue
 import com.alio.ulio.ext.getMimeType
+import com.alio.ulio.ext.queryCursor
 import com.alio.ulio.ui.alarm.MakeAlarmViewModel
 import com.alio.ulio.ui.base.BaseViewBindingFragment
+import com.alio.ulio.ui.model.Recording
 import com.anggrayudi.storage.media.MediaStoreCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -68,25 +73,41 @@ class RecordAlarmFragment :
         setUiAndEventOfAudioVisualizer()
     }
 
-    private fun setUiAndEventOfAudioVisualizer() {
-//        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.houshang_ebtehaj_arghavan)
-//            .apply { isLooping = true }
-
+    private fun initMediaPlay() {
         mediaPlayer = MediaPlayer()
-
-//        val filepath = MediaStoreCompat.fromRelativePath(requireContext(),dirPath +fileName)
-        Timber.d("path ${File(dirPath).absolutePath}")
-
         try {
             mediaPlayer?.setDataSource(
-                Environment.getExternalStoragePublicDirectory(
-                    DIRECTORY_ALARMS
-                ).absolutePath
-                        + "/AlioUlio/" + fileName
+                requireContext(),
+                getAudioFileContentUri(getMediaStoreRecordings().last().id.toLong())
             )
         } catch (e: IOException) {
             Timber.e(e)
         }
+
+        try {
+            mediaPlayer?.prepareAsync()
+        } catch (e: IOException) {
+            Timber.e(e)
+        }
+
+        mediaPlayer?.let {
+            viewBinding.visualizerView.link(it)
+        }
+    }
+
+    private fun stopMediaPlay() {
+        mediaPlayer?.pause()
+//        mediaPlayer?.release()
+//        mediaPlayer = null
+    }
+
+    private fun setUiAndEventOfAudioVisualizer() {
+//        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.houshang_ebtehaj_arghavan)
+//            .apply { isLooping = true }
+
+//        val filepath = MediaStoreCompat.fromRelativePath(requireContext(),dirPath +fileName)
+//        Timber.d("path ${File(dirPath).absolutePath}")
+//
 
         activityViewModel.setBtnNextAction {
             togglePlayBack()
@@ -107,13 +128,12 @@ class RecordAlarmFragment :
     }
 
     private fun togglePlayBack() {
-        mediaPlayer?.let {
-            if (it.isPlaying) {
-                it.pause()
-            } else {
-                it.start()
-                viewBinding.visualizerView.link(it)
-            }
+
+        if (mediaPlayer?.isPlaying == true) {
+            stopMediaPlay()
+        } else {
+
+            mediaPlayer?.start()
         }
     }
 
@@ -155,6 +175,7 @@ class RecordAlarmFragment :
 
                 lifecycleScope.launch(Dispatchers.Default) {
                     addFileInNewMediaStore()
+                    initMediaPlay()
                 }
 
             } catch (e: Exception) {
@@ -181,6 +202,14 @@ class RecordAlarmFragment :
             put(MediaStore.Audio.Media.RELATIVE_PATH, "${Environment.DIRECTORY_ALARMS}/AlioUlio")
         }
 
+        val selection = "${MediaStore.Audio.Media.OWNER_PACKAGE_NAME} = ?"
+        val selectionArgs = arrayOf(requireContext().packageName)
+
+        requireActivity().contentResolver.delete(
+            audioCollection, selection, selectionArgs
+        )
+
+
         val newUri = requireActivity().contentResolver.insert(audioCollection, newSongDetails)
         if (newUri == null) {
 //            toast(R.string.unknown_error_occurred)
@@ -197,5 +226,55 @@ class RecordAlarmFragment :
         }
     }
 
+
+    private fun getMediaStoreRecordings(): ArrayList<Recording> {
+        val recordings = ArrayList<Recording>()
+
+        val uri = MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DATE_ADDED,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.SIZE
+        )
+
+        val selection = "${MediaStore.Audio.Media.OWNER_PACKAGE_NAME} = ?"
+        val selectionArgs = arrayOf(requireContext().packageName)
+        val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
+
+        requireContext().queryCursor(
+            uri,
+            projection,
+            selection,
+            selectionArgs,
+            sortOrder,
+            true
+        ) { cursor ->
+            val id = cursor.getIntValue(MediaStore.Audio.Media._ID)
+
+
+            val recording = Recording(id)
+            recordings.add(recording)
+        }
+
+        return recordings
+    }
+
+    fun getAudioFileContentUri(id: Long): Uri {
+        val baseUri =
+//        if (isQPlus()) {
+            MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
+//        } else {
+//            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+//        }
+
+        return ContentUris.withAppendedId(baseUri, id)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mediaPlayer?.release()
+    }
 
 }

@@ -9,6 +9,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
+import timber.log.Timber
 
 
 fun daysOfWeekFromLocale(): Array<DayOfWeek> {
@@ -632,3 +633,29 @@ fun String.getMimeType(): String {
 
 fun String.getFilenameExtension() = substring(lastIndexOf(".") + 1)
 
+fun Context.queryCursor(
+    uri: Uri,
+    projection: Array<String>,
+    selection: String? = null,
+    selectionArgs: Array<String>? = null,
+    sortOrder: String? = null,
+    showErrors: Boolean = false,
+    callback: (cursor: Cursor) -> Unit
+) {
+    try {
+        val cursor = contentResolver.query(uri, projection, selection, selectionArgs, sortOrder)
+        cursor?.use {
+            if (cursor.moveToFirst()) {
+                do {
+                    callback(cursor)
+                } while (cursor.moveToNext())
+            }
+        }
+    } catch (e: Exception) {
+        if (showErrors) {
+            Timber.e(e)
+        }
+    }
+}
+
+fun Cursor.getIntValue(key: String) = getInt(getColumnIndex(key))

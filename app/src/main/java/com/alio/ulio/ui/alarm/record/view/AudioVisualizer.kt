@@ -70,7 +70,7 @@ class AudioVisualizer(context: Context, attrs: AttributeSet) : View(context, att
                 enabled = true
             }
 
-        mediaPlayer.setOnCompletionListener { visualizer?.enabled = false }
+        mediaPlayer.setOnCompletionListener { visualizer?.enabled = true }
     }
 
     fun visualizeData() {
