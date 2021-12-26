@@ -109,7 +109,12 @@ dependencies {
     implementation Libs.CustomView.calendarView
     implementation Libs.CustomView.expandableLayout
     implementation Libs.CustomView.lottie
-    implementation "com.anggrayudi:storage:0.14.0"
+
+    implementation Libs.OkHttp.core
+    implementation Libs.OkHttp.loggingInterceptor
+    implementation Libs.Retrofit.retrofit
+    implementation Libs.Retrofit.gson
+    implementation Libs.Retrofit.converterGson
 
     implementation Libs.timber
 

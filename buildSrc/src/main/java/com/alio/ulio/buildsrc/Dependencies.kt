@@ -123,6 +123,19 @@ object Libs {
         const val desuagrJdk = "com.android.tools:desugar_jdk_libs:1.1.5"
     }
 
+    object OkHttp {
+        private const val version = "4.9.3"
+        const val core = "com.squareup.okhttp3:okhttp:$version"
+        const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
+    }
+
+    object Retrofit {
+        private const val version = "2.9.0"
+        const val retrofit = "com.squareup.retrofit2:retrofit:$version"
+        const val gson = "com.google.code.gson:gson:2.8.7"
+        const val converterGson = "com.squareup.retrofit2:converter-gson:$version"
+    }
+
     object Coil {
         const val coilCompose = "io.coil-kt:coil-compose:1.3.2"
     }

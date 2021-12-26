@@ -21,14 +21,12 @@ import com.alio.ulio.ext.queryCursor
 import com.alio.ulio.ui.alarm.MakeAlarmViewModel
 import com.alio.ulio.ui.base.BaseViewBindingFragment
 import com.alio.ulio.ui.model.Recording
-import com.anggrayudi.storage.media.MediaStoreCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
@@ -110,7 +108,8 @@ class RecordAlarmFragment :
 //
 
         activityViewModel.setBtnNextAction {
-            togglePlayBack()
+//            togglePlayBack()
+            viewModel.findUploadUrl(fileName)
         }
 
         viewBinding.btnRecord.setOnClickListener {
