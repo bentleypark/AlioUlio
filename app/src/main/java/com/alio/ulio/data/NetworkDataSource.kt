@@ -23,7 +23,7 @@ class NetworkDataSource @Inject constructor(private val apiService: ApiService) 
     suspend fun uploadAudioFile(
         url: String,
         file: RequestBody
-    ): Flow<DataState<UploadAudioFileResponse>> =
+    ): Flow<DataState<Unit>> =
         callbackFlow {
             trySend(DataState.Success(apiService.uploadAudioFile(url = url, file = file)))
             awaitClose { close() }

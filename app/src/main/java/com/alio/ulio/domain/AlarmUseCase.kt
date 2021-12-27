@@ -37,7 +37,7 @@ class AlarmUseCase(private val networkDataSource: NetworkDataSource) {
 class UploadUseCase(private val networkDataSource: NetworkDataSource) {
 
 
-    operator fun invoke(url: String, file: RequestBody): Flow<UploadAudioFileResponse> =
+    operator fun invoke(url: String, file: RequestBody): Flow<Unit> =
         callbackFlow {
             networkDataSource.uploadAudioFile(url, file)
                 .catch { exception -> Timber.e(exception) }

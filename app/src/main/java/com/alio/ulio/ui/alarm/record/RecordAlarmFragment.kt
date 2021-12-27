@@ -299,8 +299,13 @@ class RecordAlarmFragment :
         ) { cursor ->
             val id = cursor.getIntValue(MediaStore.Audio.Media._ID)
             val title = cursor.getStringValue(MediaStore.Audio.Media.DISPLAY_NAME)
+            var size = cursor.getIntValue(MediaStore.Audio.Media.SIZE)
 
-            val recording = Recording(id, title)
+            if (size == 0) {
+                size = getSizeFromUri(id.toLong())
+            }
+
+            val recording = Recording(id, title, size)
             recordings.add(recording)
         }
 
@@ -318,11 +323,12 @@ class RecordAlarmFragment :
         return ContentUris.withAppendedId(baseUri, id)
     }
 
-
+    var length: Long = 0
     fun makeMultipartFromUri(): RequestBody {
 
         val uri = getAudioFileContentUri(getMediaStoreRecordings().last().id.toLong())
-        val title = getMediaStoreRecordings().last().title
+
+        length = getMediaStoreRecordings().last().size.toLong()
 
         val requestBody = object : RequestBody() {
             override fun contentType(): MediaType? {
@@ -334,6 +340,9 @@ class RecordAlarmFragment :
                     ?.let { sink.writeAll(it.source()) }
             }
 
+            override fun contentLength(): Long {
+                return length
+            }
         }
 
 
@@ -343,6 +352,7 @@ class RecordAlarmFragment :
 
     private fun observeViewModel() = with(viewModel) {
         uploadUrl.observe(viewLifecycleOwner) { url ->
+            val size = getMediaStoreRecordings().last().size.toLong()
             upload(makeMultipartFromUri())
         }
     }
@@ -365,6 +375,15 @@ class RecordAlarmFragment :
         )
         lifecycleScope.launch(Dispatchers.Main) {
             viewBinding.tvDuration.text = duration.getFormattedDuration(true)
+        }
+    }
+
+    private fun getSizeFromUri(id: Long): Int {
+        val recordingUri = getAudioFileContentUri(id)
+        return try {
+            requireContext().contentResolver.openInputStream(recordingUri)?.available() ?: 0
+        } catch (e: Exception) {
+            0
         }
     }
 

@@ -17,11 +17,12 @@ interface ApiService {
     suspend fun findUploadUrl(@Field("name") email: String): FindUploadUrlResponse
 
     //    @Multipart
-    @Headers("Content-Type: audio/mpeg")
+//    @Headers("Content-Type: audio/mpeg")
     @PUT
     suspend fun uploadAudioFile(
         @Url url: String,
+//        @Header("Content-Length") contentLength: Long,
         @Body file: RequestBody,
-    ): UploadAudioFileResponse
+    )
 
 }
