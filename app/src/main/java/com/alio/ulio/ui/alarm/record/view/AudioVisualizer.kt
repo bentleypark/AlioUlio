@@ -8,6 +8,7 @@ import android.media.MediaRecorder
 import android.media.audiofx.Visualizer
 import android.util.AttributeSet
 import android.view.View
+import timber.log.Timber
 import kotlin.math.log10
 import kotlin.math.max
 
@@ -35,8 +36,6 @@ class AudioVisualizer(context: Context, attrs: AttributeSet) : View(context, att
 
     init {
         setBackgroundColor(backgroundColor) // showing bounding box of the view
-
-
     }
 
     private var magnitudes = floatArrayOf()
@@ -56,9 +55,10 @@ class AudioVisualizer(context: Context, attrs: AttributeSet) : View(context, att
         override fun onWaveFormDataCapture(v: Visualizer?, data: ByteArray?, sampleRate: Int) = Unit
     }
 
-    fun link(mediaPlayer: MediaPlayer) {
+    fun link(mediaPlayer: MediaPlayer?) {
         if (visualizer != null) return
-        visualizer = Visualizer(mediaPlayer.audioSessionId)
+        if(mediaPlayer == null) return
+        visualizer = Visualizer(mediaPlayer.audioSessionId?: 0)
             .apply {
                 captureSize = Visualizer.getCaptureSizeRange()[1]
                 setDataCaptureListener(
@@ -70,7 +70,7 @@ class AudioVisualizer(context: Context, attrs: AttributeSet) : View(context, att
                 enabled = true
             }
 
-        mediaPlayer.setOnCompletionListener { visualizer?.enabled = true }
+        mediaPlayer.setOnCompletionListener { visualizer?.enabled = false }
     }
 
     fun visualizeData() {
@@ -156,6 +156,15 @@ class AudioVisualizer(context: Context, attrs: AttributeSet) : View(context, att
     override fun onDetachedFromWindow() {
         visualizer?.release()
         super.onDetachedFromWindow()
+    }
+
+    fun setEnable() {
+        visualizer?.enabled = true
+    }
+
+    fun release() {
+        visualizer?.release()
+        visualizer = null
     }
 
     companion object {

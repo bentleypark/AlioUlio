@@ -22,7 +22,9 @@ import com.alio.ulio.ui.base.BaseViewBindingFragment
 import com.alio.ulio.ui.model.Recording
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -55,6 +57,7 @@ class RecordAlarmFragment :
     }
 
     private var status = RECORDING_STOPPED
+    private var playerStatus = PLAYING_STOPPED
 
     private var absolutePath = ""
 
@@ -62,6 +65,8 @@ class RecordAlarmFragment :
         const val RECORDING_RUNNING = 0
         const val RECORDING_STOPPED = 1
         const val RECORDING_PAUSED = 2
+        const val PLAYING_RUNNING = 3
+        const val PLAYING_STOPPED = 4
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,19 +96,14 @@ class RecordAlarmFragment :
 
         try {
             mediaPlayer?.prepareAsync()
+            viewBinding.visualizerView.link(mediaPlayer)
         } catch (e: IOException) {
             Timber.e(e)
-        }
-
-        mediaPlayer?.let {
-            viewBinding.visualizerView.link(it)
         }
     }
 
     private fun stopMediaPlay() {
         mediaPlayer?.pause()
-//        mediaPlayer?.release()
-//        mediaPlayer = null
     }
 
     private fun setUiAndEventOfAudioVisualizer() {
@@ -143,6 +143,7 @@ class RecordAlarmFragment :
                             R.color.normal_duration_color
                         )
                     )
+                    viewBinding.tvPlay.text = "다시 듣기"
 
                     activityViewModel.setBtnNextEnable(true)
                 }
@@ -156,18 +157,26 @@ class RecordAlarmFragment :
     }
 
     private fun togglePlayBack() {
-
         if (mediaPlayer?.isPlaying == true) {
+            viewBinding.tvPlay.text = "다시 듣기"
             stopMediaPlay()
         } else {
+            viewBinding.tvPlay.text = "그만 듣기"
+            lifecycleScope.launch {
 
-            mediaPlayer?.start()
+                viewBinding.visualizerView.setEnable()
+                mediaPlayer?.start()
+
+                mediaPlayer?.setOnCompletionListener {
+                    viewBinding.tvPlay.text = "다시 듣기"
+                }
+            }
         }
     }
 
     private fun startRecording() {
 
-        if (status == RECORDING_RUNNING) {
+        if (status == RECORDING_RUNNING || mediaPlayer?.isPlaying == true) {
             return
         }
 
@@ -191,8 +200,11 @@ class RecordAlarmFragment :
             status = RECORDING_RUNNING
 
             durationTimer = Timer()
-            durationTimer.scheduleAtFixedRate(getDurationUpdateTask(), 1000, 1000)
-            viewBinding.ivRecordIndicator.isVisible = true
+            lifecycleScope.launch {
+                durationTimer.scheduleAtFixedRate(getDurationUpdateTask(), 1000, 1000)
+                delay(1000)
+                viewBinding.ivRecordIndicator.isVisible = true
+            }
         }
     }
 
@@ -205,6 +217,7 @@ class RecordAlarmFragment :
             try {
                 stop()
                 release()
+                viewBinding.visualizerView.release()
 
                 lifecycleScope.launch(Dispatchers.Default) {
                     addFileInNewMediaStore()
