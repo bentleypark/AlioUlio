@@ -9,6 +9,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import com.alio.ulio.R
 import com.alio.ulio.databinding.ActivityMakeAlarmBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -27,7 +29,23 @@ class MakeAlarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
 
+        handleIntent()
         observeViewModel()
+    }
+
+    private fun handleIntent() {
+        val alarmType = intent.getStringExtra(ALARM_TYPE)
+
+        val navController = findNavController(R.id.navHost)
+        val navInflater = navController.navInflater
+        val navGraph = navInflater.inflate(R.navigation.nav_graph_alarm)
+
+        when (alarmType) {
+            "onetime" -> navGraph.setStartDestination(R.id.onetimeAlarmDateTimeSelectionFragment)
+            else -> navGraph.setStartDestination(R.id.regularAlarmDateTimeSelectionFragment)
+        }
+
+        navController.graph = navGraph
     }
 
     private fun setTitle(title: String) {
@@ -61,19 +79,15 @@ class MakeAlarmActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
     companion object {
+        private const val ALARM_TYPE = "ALARM_TYPE"
+
         fun newIntent(
             context: Context,
             alarmType: String
         ): Intent {
             return Intent(context, MakeAlarmActivity::class.java).apply {
-
+                putExtra(ALARM_TYPE, alarmType)
             }
         }
     }

@@ -56,6 +56,10 @@ private fun RequiresRecordVoicePermission(
         android.Manifest.permission.RECORD_AUDIO
     )
 
+    val readExternalStoragePermissionState = rememberPermissionState(
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(
         key1 = lifecycleOwner,
@@ -63,6 +67,7 @@ private fun RequiresRecordVoicePermission(
             val observer = LifecycleEventObserver { _, event ->
                 if (event == Lifecycle.Event.ON_START) {
                     recordVoicePermissionState.launchPermissionRequest()
+                    readExternalStoragePermissionState.launchPermissionRequest()
                 }
             }
             lifecycleOwner.lifecycle.addObserver(observer)

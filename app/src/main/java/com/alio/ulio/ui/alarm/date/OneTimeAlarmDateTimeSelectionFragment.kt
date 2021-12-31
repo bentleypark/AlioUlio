@@ -14,7 +14,6 @@ import com.alio.ulio.databinding.CalendarDayLayoutBinding
 import com.alio.ulio.databinding.FragmentAlarmDaySelectionBinding
 import com.alio.ulio.ext.daysOfWeekFromLocale
 import com.alio.ulio.ui.alarm.MakeAlarmViewModel
-import com.alio.ulio.ui.alarm.data.NextButtonUi
 import com.alio.ulio.ui.base.BaseViewBindingFragment
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
@@ -32,7 +31,7 @@ import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
-class AlarmDateTimeSelectionFragment :
+class OneTimeAlarmDateTimeSelectionFragment :
     BaseViewBindingFragment<FragmentAlarmDaySelectionBinding>(R.layout.fragment_alarm_day_selection) {
 
     private val activityViewModel: MakeAlarmViewModel by activityViewModels()

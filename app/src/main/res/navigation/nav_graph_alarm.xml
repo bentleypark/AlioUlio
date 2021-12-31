@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_alarm"
-    app:startDestination="@id/alarmDateTimeSelectionFragment">
+    android:id="@+id/nav_graph_alarm">
 
     <fragment
-        android:id="@+id/alarmDateTimeSelectionFragment"
-        android:name="com.alio.ulio.ui.alarm.date.AlarmDateTimeSelectionFragment"
-        android:label="AlarmDateTimeSelectionFragment" >
+        android:id="@+id/onetimeAlarmDateTimeSelectionFragment"
+        android:name="com.alio.ulio.ui.alarm.date.OneTimeAlarmDateTimeSelectionFragment"
+        android:label="AlarmDateTimeSelectionFragment">
         <action
             android:id="@+id/action_alarmDateTimeSelectionFragment_to_recordAlarmFragment"
             app:destination="@id/recordAlarmFragment" />
@@ -16,4 +15,12 @@
         android:id="@+id/recordAlarmFragment"
         android:name="com.alio.ulio.ui.alarm.record.RecordAlarmFragment"
         android:label="RecordAlarmFragment" />
+    <fragment
+        android:id="@+id/regularAlarmDateTimeSelectionFragment"
+        android:name="com.alio.ulio.ui.alarm.date.RegularAlarmDateTimeSelectionFragment"
+        android:label="RegularAlarmDateTimeSelectionFragment">
+        <action
+            android:id="@+id/action_regularAlarmDateTimeSelectionFragment_to_recordAlarmFragment"
+            app:destination="@id/recordAlarmFragment" />
+    </fragment>
 </navigation>

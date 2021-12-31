@@ -79,7 +79,7 @@ fun AlarmTypeSelectList() {
             R.drawable.ic_alarm_type_one_time
         ),
         AlarmSelectionType(
-            AlarmType.Onetime,
+            AlarmType.Regular,
             R.drawable.ic_alarm_type_regular_title,
             R.drawable.ic_alarm_type_regular
         )
