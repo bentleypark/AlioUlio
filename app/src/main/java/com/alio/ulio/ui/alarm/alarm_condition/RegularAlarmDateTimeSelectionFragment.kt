@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.alio.ulio.R
 import com.alio.ulio.databinding.FragmentRegularAlarmDateTimeSelectionBinding
@@ -42,6 +43,7 @@ class RegularAlarmDateTimeSelectionFragment :
         activityViewModel.setProgressImg(R.drawable.ic_progress_line01)
 
         setDayRecyclerview()
+        setUiOfBtnNext()
     }
 
     private fun setDayRecyclerview() = with(viewBinding.rvDay) {
@@ -51,6 +53,12 @@ class RegularAlarmDateTimeSelectionFragment :
         adapter = daySelectionAdapter
         setHasFixedSize(true)
         addItemDecoration(SpaceDecoration(5))
+    }
+
+    private fun setUiOfBtnNext() = with(activityViewModel) {
+        setBtnNextAction {
+            findNavController().navigate(R.id.action_regularAlarmDateTimeSelectionFragment_to_recordAlarmFragment)
+        }
     }
 
     private fun observeViewModel() {

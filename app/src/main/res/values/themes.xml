@@ -2,11 +2,14 @@
 <resources>
 
     <style name="Theme.AlioUlio" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">#ffffff</item>
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowActivityTransitions">true</item>
+        <!--        <item name="android:windowContentTransitions">true</item>-->
+        <!--        <item name="android:windowActivityTransitions">true</item>-->
         <item name="android:windowLightStatusBar">true</item>
-<!--        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>-->
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
     </style>
 
     <style name="CalendarTextAppearance" parent="TextAppearance.AppCompat.Medium">

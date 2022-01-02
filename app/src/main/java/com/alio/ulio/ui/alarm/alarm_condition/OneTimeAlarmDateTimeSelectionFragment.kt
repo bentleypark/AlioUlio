@@ -48,7 +48,7 @@ class OneTimeAlarmDateTimeSelectionFragment :
 
     private fun setUi() {
         activityViewModel.setTitle("알람의 조건을\n설정하세요")
-
+        activityViewModel.setProgressImg(R.drawable.ic_progress_line01)
         observeViewModel()
         setUiOfCalendarView()
         setUIAndEventOfCalendarViewHeader()
@@ -70,8 +70,6 @@ class OneTimeAlarmDateTimeSelectionFragment :
         setBtnNextAction {
             findNavController().navigate(R.id.action_alarmDateTimeSelectionFragment_to_recordAlarmFragment)
         }
-
-        setProgressImg(R.drawable.ic_progress_line01)
     }
 
     private fun observeViewModel() {
@@ -80,7 +78,11 @@ class OneTimeAlarmDateTimeSelectionFragment :
                 activityViewModel.selectedDate.collect { selectedDate ->
                     selectedDate?.let {
                         val fullDateText =
-                            "${selectedDate.yearMonth.year}월 ${monthFormatter.format(selectedDate.yearMonth)} ${selectedDate.dayOfMonth}일"
+                            "${selectedDate.yearMonth.year}월 ${
+                                monthFormatter.format(
+                                    selectedDate.yearMonth
+                                )
+                            } ${selectedDate.dayOfMonth}일"
                         viewBinding.tvHint.text = fullDateText
                         viewBinding.tvHint.setTextColor(
                             ContextCompat.getColor(

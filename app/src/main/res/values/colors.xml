@@ -21,4 +21,8 @@
     <color name="input_hint_text_color">#D6D6D6</color>
     <color name="record_duration_color">#F85D79</color>
     <color name="normal_duration_color">#666666</color>
+
+    <color name="colorPrimary">#454A57</color>
+    <color name="colorSecondary">#979CA8</color>
+    <color name="colorAccent">#979CA8</color>
 </resources>
