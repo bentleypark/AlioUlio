@@ -9,8 +9,5 @@ class SpaceDecoration(private val size: Int) : RecyclerView.ItemDecoration() {
         super.getItemOffsets(outRect, view, parent, state)
         outRect.top += size
         outRect.bottom += size
-//        if (parent.getChildAdapterPosition(view) == 0) {
-//            outRect.left += size
-//        }
     }
 }

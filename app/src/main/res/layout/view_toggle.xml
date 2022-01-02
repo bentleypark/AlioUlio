@@ -10,7 +10,7 @@
         android:id="@+id/leftView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_bg_s_r_inactive"
+        android:background="@drawable/ic_bg_s_am_inactive"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,7 +29,7 @@
         android:id="@+id/rightView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_bg_s_r_active"
+        android:background="@drawable/ic_bg_s_pm_active"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

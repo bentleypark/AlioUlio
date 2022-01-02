@@ -136,27 +136,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/dateLayout" />
 
-            <include
-                android:id="@+id/viewToggle"
-                layout="@layout/view_toggle"
-                android:layout_width="wrap_content"
+            <com.alio.ulio.ui.alarm.alarm_condition.view.AlarmTimeInputView
+                android:id="@+id/viewInputTime"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTimeTitle" />
-
-            <include
-                android:id="@+id/viewInputTime"
-                layout="@layout/view_input_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/viewToggle"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTimeTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
