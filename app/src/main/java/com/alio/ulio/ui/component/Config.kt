@@ -9,7 +9,7 @@ val verticalPadding = 12.dp
 val horizontalPadding = 10.dp
 val bottomBarHeight = 70.dp
 
-fun Modifier.icon() = padding(bottom = 7.dp)
+fun Modifier.icon() = padding(bottom = 7.dp, top = 10.dp)
 
 fun Modifier.defaultPadding() = this.padding(
     horizontal = horizontalPadding,

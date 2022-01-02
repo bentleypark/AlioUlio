@@ -49,6 +49,7 @@ fun MainScreen() {
                 BottomNavigationItem.Account -> Account()
             }
         }
+
     }
 }
 

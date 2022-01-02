@@ -1,4 +1,4 @@
-package com.alio.ulio.ui.alarm.date
+package com.alio.ulio.ui.alarm.alarm_condition
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

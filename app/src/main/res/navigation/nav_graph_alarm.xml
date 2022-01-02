@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/onetimeAlarmDateTimeSelectionFragment"
-        android:name="com.alio.ulio.ui.alarm.date.OneTimeAlarmDateTimeSelectionFragment"
+        android:name="com.alio.ulio.ui.alarm.alarm_condition.OneTimeAlarmDateTimeSelectionFragment"
         android:label="AlarmDateTimeSelectionFragment">
         <action
             android:id="@+id/action_alarmDateTimeSelectionFragment_to_recordAlarmFragment"
@@ -17,7 +17,7 @@
         android:label="RecordAlarmFragment" />
     <fragment
         android:id="@+id/regularAlarmDateTimeSelectionFragment"
-        android:name="com.alio.ulio.ui.alarm.date.RegularAlarmDateTimeSelectionFragment"
+        android:name="com.alio.ulio.ui.alarm.alarm_condition.RegularAlarmDateTimeSelectionFragment"
         android:label="RegularAlarmDateTimeSelectionFragment">
         <action
             android:id="@+id/action_regularAlarmDateTimeSelectionFragment_to_recordAlarmFragment"
